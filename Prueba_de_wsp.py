@@ -3,7 +3,7 @@ import random
 'TODOS LOS TEST ESTAN AL FINAL'
 
 token=[',',' ',':','!','?','.','*','>','1','2','3','4','5','6','7','8','9','0','-','/','\n','"']
-archivo_a_usar="ChatElectronica.txt" #Poner el nombre de tu archivo acá, recordar tener este archivo y el de chat en la misma carpeta(LA TERMINAL TAMBIEN, debes estar "parado" en esa carpeta)
+archivo_a_usar="ChatAurelio.txt" #Poner el nombre de tu archivo acá, recordar tener este archivo y el de chat en la misma carpeta(LA TERMINAL TAMBIEN, debes estar "parado" en esa carpeta)
 
 
 def top(diccio:dict)->dict:
@@ -220,6 +220,69 @@ def mensajes_mas_largos(file)->dict:
 
 #print(top(mensajes_mas_largos(archivo_a_usar)))
 
+def año_mas_activo(file)->dict[str,int]:
+    archivo=open(file,'r', encoding='utf8')
+    archivo_legible=archivo.readlines()
+    año=0
+    res={}
+    dict_con_errores={}
+    for lineas in archivo_legible:
+        año=0
+        if len(lineas)>7:
+            año=lineas[6]+lineas[7]
+            if  año not in dict_con_errores.keys():
+                dict_con_errores[año]=1
+            else:
+                dict_con_errores[año]+=1
+    for ano, cantidad in dict_con_errores.items():
+        if cantidad>25:
+            res[ano]=cantidad
+    return res
+
+#print(top(año_mas_activo(archivo_a_usar)))
+'Minimo 5msjs se puede cambiar'
+def mes_mas_activo(file)->dict[str,int]:
+    archivo=open(file,'r', encoding='utf8')
+    archivo_legible=archivo.readlines()
+    mes=0
+    res={}
+    dict_con_errores={}
+    for lineas in archivo_legible:
+        mes=0
+        if len(lineas)>7:
+            mes=lineas[3]+lineas[4]+lineas[5]+lineas[6]+lineas[7]
+            if  mes not in dict_con_errores.keys():
+                dict_con_errores[mes]=1
+            else:
+                dict_con_errores[mes]+=1
+    for dias, cantidad in dict_con_errores.items():
+        if cantidad>5:
+            res[dias]=cantidad
+    return res
+
+#print(top(mes_mas_activo(archivo_a_usar)))
+
+'Minimo 50msjs se puede cambiar'
+def dia_mas_activo(file)->dict[str,int]:
+    archivo=open(file,'r', encoding='utf8')
+    archivo_legible=archivo.readlines()
+    dia=0
+    res={}
+    dict_con_errores={}
+    for lineas in archivo_legible:
+        dia=0
+        if len(lineas)>7:
+            dia=lineas[0]+lineas[1]+lineas[2]+lineas[3]+lineas[4]+lineas[5]+lineas[6]+lineas[7]
+            if  dia not in dict_con_errores.keys():
+                dict_con_errores[dia]=1
+            else:
+                dict_con_errores[dia]+=1
+    for dias, cantidad in dict_con_errores.items():
+        if cantidad>50:
+            res[dias]=cantidad
+    return res
+
+#print(top(dia_mas_activo(archivo_a_usar)))
 
 
 
@@ -238,3 +301,8 @@ def mensajes_mas_largos(file)->dict:
 #print(mensaje_random(archivo_a_usar,20))
 #print(top(mensajes_mas_largos(archivo_a_usar)))
 #print(top(cantidad_de_veces_que_lo_dijo(archivo_a_usar,"hola")))
+''''''''''''''''''''''''''''''''''''''''''
+'Si queres verlo en orden, sacar el "top()"'
+#print(top(año_mas_activo(archivo_a_usar)))
+#print(top(mes_mas_activo(archivo_a_usar)))
+#print(top(dia_mas_activo(archivo_a_usar)))
