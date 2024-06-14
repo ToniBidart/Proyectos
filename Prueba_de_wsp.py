@@ -3,7 +3,7 @@ import random
 'TODOS LOS TEST ESTAN AL FINAL'
 
 token=[',',' ',':','!','?','.','*','>','1','2','3','4','5','6','7','8','9','0','-','/','\n','"']
-archivo_a_usar="ChatAurelio.txt" #Poner el nombre de tu archivo acá, recordar tener este archivo y el de chat en la misma carpeta(LA TERMINAL TAMBIEN, debes estar "parado" en esa carpeta)
+archivo_a_usar="ChatTDB.txt" #Poner el nombre de tu archivo acá, recordar tener este archivo y el de chat en la misma carpeta(LA TERMINAL TAMBIEN, debes estar "parado" en esa carpeta)
 
 
 def top(diccio:dict)->dict:
@@ -256,7 +256,7 @@ def mes_mas_activo(file)->dict[str,int]:
             else:
                 dict_con_errores[mes]+=1
     for dias, cantidad in dict_con_errores.items():
-        if cantidad>5:
+        if cantidad>1000:
             res[dias]=cantidad
     return res
 
@@ -278,12 +278,45 @@ def dia_mas_activo(file)->dict[str,int]:
             else:
                 dict_con_errores[dia]+=1
     for dias, cantidad in dict_con_errores.items():
-        if cantidad>50:
+        if cantidad>500:
             res[dias]=cantidad
     return res
 
 #print(top(dia_mas_activo(archivo_a_usar)))
 
+def dias_de_asistencia(file)->dict:
+    archivo=open(file,'r', encoding='utf8')
+    archivo_legible=archivo.readlines()
+    arc=[]
+    lista_del_dia=[]
+    lista_de_personas=persona_que_mas_habla(file).keys()
+    cantidad_de_dias=0
+    numeros=['0','1','2','3','4','5','6','7','8','9']
+    res={}
+
+    for lineas in archivo_legible:
+        arc.append(lineas.lower())
+
+    for i in range(len(arc)-1):
+        if len(arc[i]) >7  and len(arc[i+1]) > 7:
+            if (arc[i][0]+arc[i][1]+ arc[i][2]+arc[i][3]+ arc[i][4]+arc[i][5]+ arc[i][6]+arc[i][7] ) == (arc[i+1][0]+arc[i+1][1]+ arc[i+1][2]+arc[i][3]+ arc[i+1][4]+arc[i+1][5]+ arc[i+1][6]+arc[i+1][7]):
+                for persona in lista_de_personas:
+                        if persona in arc[i] and persona not in lista_del_dia:
+                            lista_del_dia.append(persona)
+            else:
+                if arc[i-1][0] in numeros:
+                    cantidad_de_dias+=1
+                    for nombres in lista_del_dia:
+                        if nombres in lista_de_personas and nombres in res.keys():
+                            res[nombres]+=1
+                            lista_del_dia=[]
+                        elif nombres in lista_de_personas and nombres not in res.keys():
+                            res[nombres]=1
+                            lista_del_dia=[]
+
+    return res
+
+#print(top(dias_de_asistencia(archivo_a_usar)))
 
 
 # 
@@ -297,12 +330,14 @@ def dia_mas_activo(file)->dict[str,int]:
 #print(mensajes_totales(archivo_a_usar))
 #print(top(persona_que_mas_habla(archivo_a_usar)))
 #print(top(palabra_mas_dicha(archivo_a_usar)))
-#print(contador_de_palabra(archivo_a_usar,"toni"))
-#print(mensaje_random(archivo_a_usar,20))
+#print(contador_de_palabra(archivo_a_usar,"hola"))
+#print(mensaje_random(archivo_a_usar,5))
 #print(top(mensajes_mas_largos(archivo_a_usar)))
-#print(top(cantidad_de_veces_que_lo_dijo(archivo_a_usar,"hola")))
+#print(top(cantidad_de_veces_que_lo_dijo(archivo_a_usar,"sparvoli")))
 ''''''''''''''''''''''''''''''''''''''''''
 'Si queres verlo en orden, sacar el "top()"'
 #print(top(año_mas_activo(archivo_a_usar)))
 #print(top(mes_mas_activo(archivo_a_usar)))
 #print(top(dia_mas_activo(archivo_a_usar)))
+
+#print(top(dias_de_asistencia(archivo_a_usar)))
